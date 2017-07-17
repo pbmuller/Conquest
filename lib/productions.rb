@@ -6,29 +6,59 @@ class Productions
 		@location = location
 	end
 
-	def get_products
-		products = {food: 0, gold: 0, ore: 0, wood: 0}
+	def resources(kind="net")
+		resources = {food: 0, gold: 0, ore: 0, wood: 0}
 		case type
 		when "farm"
-			products[:food] = 2
+			if kind != "produces" 
+				resources[:gold] = -1
+			elsif kind != "upkeep"
+				resources[:food] = 2
+			end
 		when "lumber_mill"
-			products[:wood] = 2
+			if kind != "produces" 
+				resources[:gold] = -1
+			elsif kind != "upkeep"
+				resources[:wood] = 2
+			end
 		when "mine"
-			products[:gold] = 3
-			products[:ore] = 3
+			if kind != "produces" 
+				resources[:food] = -1
+				resources[:wood] = -1
+			elsif kind != "upkeep"
+				resources[:gold] = 3
+				resources[:ore] = 3
+			end
 		when "port"
-			products[:food] = 3
-			products[:wood] = 1
+			if kind != "produces" 
+				resources[:gold] = -2
+			elsif kind != "upkeep"
+				resources[:food] = 3
+				resources[:wood] = 1
+			end
 		when "city"
-			products[:gold] = 8
-			products[:ore] = 2
+			if kind != "produces" 
+				resources[:food] = -4
+			elsif kind != "upkeep"
+				resources[:gold] = 8
+				resources[:ore] = 2
+			end
+		when "troops"
+			if kind != "produces"
+				resources[:food] = -1
+				resources[:gold] = -1
+			end
 		when "capital_city"
-			products[:food] = 2
-			products[:gold] = 3
-			products[:wood] = 1
+			if kind != "upkeep"
+				resources[:food] = 2
+				resources[:gold] = 3
+				resources[:wood] = 1
+			end
 		when "forest"
-			products[:wood] = 1
+			if kind != "upkeep"
+				resources[:wood] = 1
+			end
 		end
-		products
+		resources
 	end
 end
